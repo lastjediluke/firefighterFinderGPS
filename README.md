@@ -1,3 +1,4 @@
+## Cloning and Pushing Protocol
 1. Clone repo
 2. Copy, ctrl+c not drag and drop, LukeApplication/User files into Eclipse workspace under Application/User
 * Drag and drop messes with eclipse, so don't use it
