@@ -649,35 +649,35 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
   toggle = 1 - toggle;
 #endif /* SENSOR */
 
-  strcpy((char *)payload,"\"data\":[{");
+  // strcpy((char *)payload,"\"data\":[{");
 #ifdef SENSOR
-  strcat((char *)payload,"\"dataType\":\"temp\",\"value\":");
+  strcpy((char *) payload, "{\"temp\":");
   sprintf(tempbuf,"\"%.2f\"",sensorT);
-  strcat((char *)payload,tempbuf);
+  strcat((char *)payload, tempbuf);
 
-  strcat((char *)payload,"},{");
-  strcat((char *)payload,"\"dataType\":\"hum\",\"value\":");
-  sprintf(tempbuf,"\"%.2f\"",sensorH);
-  strcat((char *)payload,tempbuf);
+  // strcat((char *)payload,"},{");
+  // strcat((char *)payload,"\"dataType\":\"hum\",\"value\":");
+  // sprintf(tempbuf,"\"%.2f\"",sensorH);
+  // strcat((char *)payload,tempbuf);
 
-  strcat((char *)payload,"},{");
-  strcat((char *)payload,"\"dataType\":\"pres\",\"value\":");
-  sprintf(tempbuf,"\"%.2f\"",sensorP);
-  strcat((char *)payload,tempbuf);
+  // strcat((char *)payload,"},{");
+  // strcat((char *)payload,"\"dataType\":\"pres\",\"value\":");
+  // sprintf(tempbuf,"\"%.2f\"",sensorP);
+  // strcat((char *)payload,tempbuf);
 #else /* SENSOR */
-  strcat((char *)payload,"\"dataType\":\"Toggle\",\"value\":");
-  sprintf(tempbuf,"\"%d\"",toggle);
-  strcat((char *)payload,tempbuf);
+  // strcat((char *)payload,"\"dataType\":\"Toggle\",\"value\":");
+  // sprintf(tempbuf,"\"%d\"",toggle);
+  // strcat((char *)payload, tempbuf);
 #endif
-  strcat((char *)payload,"}]}");
+  strcat((char *)payload,"}");
 
   // func to clear payload buffer
-  memset(payload, 0, 255);
-  payload[0] = 'a';
+  // memset(payload, 0, 255);
 
   // I think pub.payload is the one that matters?
-  pub.payload = "{\"squad\":\"Alpha\",\"name\":\"Luke\"}";
-  pub.payloadlen = strlen(pub.payload);
+  // pub.payload = "{\"squad\":\"Alpha\",\"name\":\"Luke\",\"temp\":%s}", tempbuf;
+
+  pub.payloadlen = strlen(payload);
 
   // rc = MQTTPublish(&gcpClient->client, publishTopic, &pub);
   rc = MQTTPublish(&gcpClient->client, publishTopic, &pub);
@@ -685,7 +685,7 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
   if(rc == MQSUCCESS)
   {
     msg_info("#%lu publication topic: %s \tpayload: %s\n", i, publishTopic, (char *)(pub.payload));
-    msg_info("Payload, not pub.payload: %c", payload[0]);
+    // msg_info("Payload, not pub.payload: %c", payload[0]);
     i++;
   }
   else
