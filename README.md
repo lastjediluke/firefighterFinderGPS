@@ -14,6 +14,3 @@
 * parse the gps message and grab gpgga data.
 * store it in a variable
 * print it to the console using printf
-
-
-
