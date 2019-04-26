@@ -20,10 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 // #include "stm32l4xx_hal_gpio_ex.h"
-
-
-
 #include "googleiot.h"
+#include "gps_buff.h"
+#include "gps.h"
 
 /* Global variables ---------------------------------------------------------*/
 RTC_HandleTypeDef hrtc;
@@ -126,16 +125,6 @@ int main(void)
 
 	// Configure the system clock
 	SystemClock_Config();
-
-	// Luke UART
-
-	// __USART4_CLK_ENABLE();
-	// __UART4_CLK_ENABLE();
-	// __GPIOA_CLK_ENABLE();
-
-
-
-
 	Periph_Config();
 
 	BSP_LED_Init(LED_GREEN);
@@ -258,7 +247,7 @@ int main(void)
 	}
 	*/
 
-	// cloud_test(0);
+	cloud_test(0);
 }
 
 /**
