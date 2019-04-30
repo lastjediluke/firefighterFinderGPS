@@ -874,13 +874,13 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
 	}
 	*/
 
-	HAL_Delay(100);
+	// HAL_Delay(100);
 
 	printf("UART Receiving...\n");
-	HAL_Delay(25);
+	// HAL_Delay(25);
 	// while (bufferIter != -1){}
-	HAL_Delay(25);
-	printf("UART Received...\n");
+	// HAL_Delay(25);
+	// printf("UART Received...\n");
 
 
 
@@ -899,6 +899,7 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
   strcat((char *) payload, ",\"gps\":\"");
   strcat((char *) payload, gpsBuffer);
   strcat((char *) payload, "\"");
+  bufferIter = 0;
 
 
   // pub.payload = "{\"squad\":\"Alpha\",\"name\":\"Luke\",\"lat\":";
