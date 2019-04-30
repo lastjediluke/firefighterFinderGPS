@@ -14,3 +14,13 @@
 * parse the gps message and grab gpgga data.
 * store it in a variable
 * print it to the console using printf
+
+## Where to look
+1. go to the 430 folder
+2. most of the uart initialization code is towards the top of googleiot.c
+3. in googleiot.c, towards line 800, there is a function called gcpiot_publishtelemetry.
+* when the userbutton is pressed, this function is called and it publishes data to google iot cloud core.
+* we semd squad, member, and a gps chunk of sentences.
+4. in googleiot.c, towards line 100, we have a gps buffer.
+* when an interrupt is fired on uart4, whatever is received is placed within the gps buffer.
+
