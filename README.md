@@ -36,6 +36,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart), void floorButtonISR(), 
 3. Observe the file structure of the project.
 4. Follow the README of the project to setup the cloud integration for the board: certificates, MQTT topics, functions, etc.
 5. Replace the files, or the contents of the files, from the Eclipse project with the ones from this github (Luke430Complete).
+6. NOTE: There is some unnecessary code and functions in the project:
+* The includes, gps_buff.h and gps.h were used in an older iteration of the code and are not used here.
+
 
 ## Forward the data from the microcontroller -> Google Cloud Project MQTT Topic -> Firebase
 1. Firebase (which is now owned by Google) can be linked to a Google Cloud Project.
