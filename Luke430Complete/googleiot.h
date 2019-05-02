@@ -19,5 +19,7 @@
 
 void gcp_main(void const *arg);
 void uartAndGpsInit(void);
+void floorButtonISR(void);
+void dangerButtonISR(void);
 
 

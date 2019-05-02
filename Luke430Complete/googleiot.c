@@ -272,6 +272,56 @@ void uartAndGpsInit(void)
 	printf("GPS and buffers initialized\n");
 }
 
+// Luke Interrupts
+uint8_t floorFlags = 0;
+uint8_t dangerFlag = 0;
+
+void floorButtonISR(void)
+{
+	static unsigned long last_interrupt_time = 0;
+	unsigned long interrupt_time = HAL_GetTick();
+	// If interrupts come faster than 200ms, assume it's a bounce and ignore
+	if (interrupt_time - last_interrupt_time > 200)
+	{
+		printf("Press\n");
+		floorFlags++;
+		if (floorFlags > 4)
+		{
+			floorFlags = 0;
+		}
+		printf("Floor: %i\n", floorFlags);
+	}
+
+
+	last_interrupt_time = interrupt_time;
+
+}
+
+void dangerButtonISR(void)
+{
+	static unsigned long last_interrupt_time = 0;
+	unsigned long interrupt_time = HAL_GetTick();
+	// If interrupts come faster than 200ms, assume it's a bounce and ignore
+	if (interrupt_time - last_interrupt_time > 200)
+	{
+		if (dangerFlag == 0)
+		{
+			printf("In danger\n");
+			dangerFlag = 1;
+		}
+		else
+		{
+			printf("Out of danger\n");
+			dangerFlag = 0;
+		}
+	}
+
+
+	last_interrupt_time = interrupt_time;
+
+}
+
+
 
 /* Private function prototypes -----------------------------------------------*/
 int GcpIoT_configure(gcp_config_t *options);
@@ -822,6 +872,7 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
   pub.retained = '0';
   pub.payload = (void*)payload;
 
+  strcpy((char *) payload, "{\"squad\":\"Alpha\",\"name\":\"Luke\",");
 #ifdef SENSOR
   float sensorT,sensorH,sensorP;
   read_sensors(&sensorT,&sensorH,&sensorP);
@@ -833,9 +884,10 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
   // strcpy((char *)payload,"\"data\":[{");
 #ifdef SENSOR
   // the next 3 work
-  // strcpy((char *) payload, "{\"temp\":");
-  // sprintf(tempbuf,"\"%.2f\"",sensorT);
-  // strcat((char *)payload, tempbuf);
+
+   strcat((char *) payload, "\"temp\":");
+   sprintf(tempbuf,"\"%.2f\",",sensorT);
+   strcat((char *)payload, tempbuf);
 
   // strcat((char *)payload,"},{");
   // strcat((char *)payload,"\"dataType\":\"hum\",\"value\":");
@@ -884,22 +936,31 @@ int GcpIoT_publishTelemetry( gcp_client_t *gcpClient )
 
 
 
-
-  // I think pub.payload is the one that matters?
-  strcpy((char *) payload, "{\"squad\":\"Alpha\",\"name\":\"Luke\",\"lat\":");
-
   // School Lat = 37.337032
-  sprintf(tempbuf,"\"%.f\"", 37.1);
-  strcat((char *) payload, tempbuf);
-  strcat((char *) payload, ",\"long\":");
+  // sprintf(tempbuf,"\"%.f\"", 37.1);
+  // strcat((char *) payload, tempbuf);
+  // strcat((char *) payload, ",\"long\":");
 
   // School Long = -121.880224
-  sprintf(tempbuf,"\"%.f\"", -121.2);
-  strcat((char *) payload, tempbuf);
-  strcat((char *) payload, ",\"gps\":\"");
-  strcat((char *) payload, gpsBuffer);
-  strcat((char *) payload, "\"");
-  bufferIter = 0;
+  // sprintf(tempbuf,"\"%.f\"", -121.2);
+  // strcat((char *) payload, tempbuf);
+  // strcat((char *) payload, ",\"gps\":\"");
+
+	// floor
+	strcat((char *) payload, "\"floor\":");
+	sprintf(tempbuf,"\"%i\",", floorFlags);
+	strcat((char *)payload, tempbuf);
+
+	// status
+	strcat((char *) payload, "\"status\":");
+	if (dangerFlag) strcat((char *) payload, "\"Danger\",");
+	else strcat((char *) payload, "\"Good\",");
+
+	// gps
+	strcat((char *) payload, "\"gps\":\"");
+	strcat((char *) payload, gpsBuffer);
+	strcat((char *) payload, "\"");
+	bufferIter = 0;
 
 
   // pub.payload = "{\"squad\":\"Alpha\",\"name\":\"Luke\",\"lat\":";
