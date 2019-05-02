@@ -24,8 +24,11 @@
 * When an interrupt is fired on uart4, whatever is received is placed within the gps buffer.
 * When the buffer is filled, we begin to refill the buffer with the latest data and we reset the buffer iterator to 0.
 5. stm32l4xx_hal_msp.c has UART4 initialization specs towards the bottom of the file (void HAL_UART_MspInit(UART_HandleTypeDef* huart)).
+* HOWEVER, this is not being called, static void MX_UART4_Init(void) is declared in googleiot.c, called by uartAndGpsInit() which is called in main.c.
 6. stm32l4xx_it.c has some of the interrupt handler code.
-* Other handlers are in main.c and googleiot.c: void Uart4_RX_GPS_Int_Handler(void), void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart), 
+* Other handlers are in main.c and googleiot.c: void Uart4_RX_GPS_Int_Handler(void), 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart), void floorButtonISR(), void dangerButtonISR().
+* The handlers have some code that debounces the interrupts so that a single button press doesn't fire twice.
 
 ## Put this code into your project
 1. Download and open the Google Cloud Project from ST: https://www.st.com/en/embedded-software/x-cube-gcp.html.
