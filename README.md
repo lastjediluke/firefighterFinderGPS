@@ -7,7 +7,7 @@
 5. Push code to github
 
 ## Overview...
-1. UART4 and UART1(console uart) are initialized in googleiot.c.
+1. Most of the code is in googleiot.c.
 2. UART4 is receiving the GPS data to and from the ublox module.
 * An interrupt is fired everytime a byte is received from the GPS.
 3. The user button (blue) can be double-clicked to enter a publication loop every five seconds.
@@ -16,15 +16,16 @@
 
 ## ...And Where to look in our code
 1. Go to the Luke430Complete folder.
-2. Most of the uart and interrupt initialization code is towards the top of googleiot.c.
+2. Lines 100-300 have the functions and variables that we added to the project.
 3. In googleiot.c, towards line 800, there is a function called gcpiot_publishtelemetry.
 * When the userbutton is pressed, this function is called and it publishes data to google iot cloud core.
-* We send squad, member, temperature, floor number, status, and a gps chunk of sentences.
+* We send squad, member, temperature, floor number, status, and a gps chunk of sentences in JSON format.
 4. In googleiot.c, towards line 100, we have declared a gps buffer.
 * When an interrupt is fired on uart4, whatever is received is placed within the gps buffer.
 * When the buffer is filled, we begin to refill the buffer with the latest data and we reset the buffer iterator to 0.
-5. stm32l4xx_hal_msp.c has UART4 initialization specs towards the bottom of the file.
+5. stm32l4xx_hal_msp.c has UART4 initialization specs towards the bottom of the file (void HAL_UART_MspInit(UART_HandleTypeDef* huart)).
 6. stm32l4xx_it.c has some of the interrupt handler code.
+* Other handlers are in main.c and googleiot.c: void Uart4_RX_GPS_Int_Handler(void), void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart), 
 
 ## Put this code into your project
 1. Download and open the Google Cloud Project from ST: https://www.st.com/en/embedded-software/x-cube-gcp.html.
