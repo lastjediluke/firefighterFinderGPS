@@ -31,7 +31,7 @@
 2. Open up the project in Eclipse or the ST Workbench.
 3. Observe the file structure of the project.
 4. Follow the README of the project to setup the cloud integration for the board: certificates, MQTT topics, functions, etc.
-5. Replace the files, or the contents of the files, from the Eclipse project with the ones from this github.
+5. Replace the files, or the contents of the files, from the Eclipse project with the ones from this github (Luke430Complete).
 
 ## Forward the data from the microcontroller -> Google Cloud Project MQTT Topic -> Firebase
 1. Firebase (which is now owned by Google) can be linked to a Google Cloud Project.
