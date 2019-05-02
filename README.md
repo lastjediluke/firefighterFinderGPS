@@ -15,7 +15,7 @@
 4. We have two additional buttons that are used to control floor and status.
 
 ## ...And Where to look in our code
-1. Go to the 430 folder.
+1. Go to the Luke430Complete folder.
 2. Most of the uart and interrupt initialization code is towards the top of googleiot.c.
 3. In googleiot.c, towards line 800, there is a function called gcpiot_publishtelemetry.
 * When the userbutton is pressed, this function is called and it publishes data to google iot cloud core.
