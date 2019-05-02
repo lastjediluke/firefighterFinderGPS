@@ -33,6 +33,19 @@
 4. Follow the README of the project to setup the cloud integration for the board: certificates, MQTT topics, functions, etc.
 5. Replace the files, or the contents of the files, from the Eclipse project with the ones from this github.
 
+## Forward the data from the microcontroller -> Google Cloud Project MQTT Topic -> Firebase
+1. Firebase (which is now owned by Google) can be linked to a Google Cloud Project.
+2. A Firebase project is initialized by following the Firebase docs for web apps and CLI: https://firebase.google.com/docs.
+3. We wrote a Firebase function that is triggered by a publication to a Google Cloud Project Pub/Sub MQTT Topic.
+* Pub/Sub triggers: https://firebase.google.com/docs/functions/pubsub-events.
+4. The function can be found in index.js.
+5. This function takes a snapshot of the most recent publication.
+6. The data being sent is JSON.  The function looks for the "gps" key.
+* The "gps" key has a chunk of data containing GNGGA sentences.
+7. The GNGGA is parsed by a JS parser: https://github.com/infusion/GPS.js/tree/master.
+8. The parser creates an object that contains the latitude and longitude coordinates.
+9. The function then returns a reference to the database and updates the appropriate member's data: temp, floor, status, coordinates, squad.
+
 
 
 
