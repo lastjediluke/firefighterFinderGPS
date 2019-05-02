@@ -1,6 +1,6 @@
 ## Cloning and Pushing Protocol
 1. Clone repo
-2. Copy, ctrl+c not drag and drop, LukeApplication/User files into Eclipse workspace under Application/User
+2. Copy, ctrl+c not drag and drop, Luke430Complete files into Eclipse workspace under Application/User
 * Drag and drop messes with eclipse, so don't use it
 3. If you make changes, make a folder called ZijianApplication
 4. Copy, ctrl+c, modified files from Eclipse to this folder
