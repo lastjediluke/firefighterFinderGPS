@@ -37,10 +37,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart), void floorButtonISR(), 
 4. Follow the README of the project to setup the cloud integration for the board: certificates, MQTT topics, functions, etc.
 5. Replace the files, or the contents of the files, from the Eclipse project with the ones from this github (Luke430Complete).
 6. NOTE: There is some unnecessary code and functions in the project:
-* The includes, gps_buff.h and gps.h were used in an older iteration of the code and are not used here.
-* You can comment them out and comment out some of the their objects: gps_t, gps_buff_t.
+* The includes, gps_buff.h and gps.h were used in an older iteration of the code and are not used now.
 * If you build and it throws an error, it is likely from these files.
 * If you want to add GPS files to your project, follow this tutorial: http://www.openstm32.org/forumthread3284.
+* If you have further issues, email me at lukeisaboss96@yahoo.com.
 
 
 ## Forward the data from the microcontroller -> Google Cloud Project MQTT Topic -> Firebase
