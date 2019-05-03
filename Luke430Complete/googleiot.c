@@ -32,8 +32,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "gps_buff.h"
-#include "gps.h"
+// #include "gps_buff.h"
+// #include "gps.h"
 
 /* The init/deinit netif functions are called from cloud.c.
  * However, the application needs to reinit whenever the connectivity seems to be broken. */
@@ -105,8 +105,8 @@ UART_HandleTypeDef huart4;
 uint8_t gps_rx;
 uint8_t gpsBuffer[750];
 int bufferIter = 0;
-gps_t hgps;
-gps_buff_t hgps_buff;
+// gps_t hgps;
+// gps_buff_t hgps_buff;
 uint8_t hgps_buff_data[12];
 uint8_t gps_tx_data[] = ""
 "$GPGGA,183730,3907.356,N,12102.482,W,1,05,1.6,646.4,M,-24.1,M,,*75\r\n"
@@ -186,6 +186,7 @@ void send_GPS_Uart4(void)
 }
 
 // Process all input data
+/*
 void parse_GPS(void)
 {
 	uint8_t rx;
@@ -207,6 +208,7 @@ void parse_GPS(void)
 		printf("Lat: %f\n", hgps.latitude);
 	}
 }
+*/
 
 static void MX_UART4_Init(void)
 {
@@ -267,8 +269,8 @@ void uartAndGpsInit(void)
 	HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
 	// uart4NoInterrupt();
 	printf("UART4 Ready\n");
-	gps_init(&hgps);
-	gps_buff_init(&hgps_buff, hgps_buff_data, sizeof(hgps_buff_data));
+	// gps_init(&hgps);
+	// gps_buff_init(&hgps_buff, hgps_buff_data, sizeof(hgps_buff_data));
 	printf("GPS and buffers initialized\n");
 }
 

@@ -46,10 +46,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "googleiot.h"
-//#include "gps_buff.h"
-//#include "gps.h"
-
-//extern uint8_t GPS_Parsed_Flag;
 
 /* Global variables ---------------------------------------------------------*/
 RTC_HandleTypeDef hrtc;
@@ -67,131 +63,13 @@ static volatile uint8_t button_flags = 0;
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
 void SPI_WIFI_ISR(void);
-
 static void Console_UART_Init(void);
 static void RTC_Init(void);
 static void Button_ISR(void);
 static void cloud_test(void const *arg);
 
 /* Private functions ---------------------------------------------------------*/
-// Luke
-/*
-UART_HandleTypeDef huart4;
-uint8_t gps_rx;
-gps_t hgps;
-gps_buff_t hgps_buff;
-uint8_t hgps_buff_data[12];
-uint8_t gps_tx_data[] = ""
-"$GPGGA,183730,3907.356,N,12102.482,W,1,05,1.6,646.4,M,-24.1,M,,*75\r\n"
-"$GPGSA,A,3,02,,,07,,09,24,26,,,,,1.6,1.6,1.0*3D\r\n";
-
-// Luke Function Prototypes
-void send_GPS_Uart4(void);
-void parse_GPS(void);
-static void MX_UART4_Init(void);
-void Uart4_RX_GPS_Int_Handler(void);
-void uartAndGpsInit(void);
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
-
-void send_GPS_Uart4(void)
-{
-	// Send data on UART4 to test loopback mode
-	for(int i = 0; i < sizeof(gps_tx_data); i++)
-	{
-		if (i % 5 == 0)
-		{
-			// printf("Transmitting GPS...\n");
-		}
-		uint8_t tx = gps_tx_data[i];
-		HAL_UART_Transmit(&huart4, &tx, 1, 100);
-		HAL_Delay(50);
-		// printf("%c", gps_rx);
-		// Enable RX interrupt for Uart4
-		// HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-	}
-	// printf("Lat: %f\n", hgps.latitude);
-	// printf("Long: %f\n", hgps.longitude);
-
-	HAL_Delay(100);
-}
-
-// Process all input data
-void parse_GPS(void)
-{
-	uint8_t rx;
-	// printf("Begin GPS Parse...\n");
-
-	// Read from buffer byte-by-byte and call processing function
-	if (gps_buff_get_full(&hgps_buff))		// Check if anything in buffer now
-	{
-		while (gps_buff_read(&hgps_buff, &rx, 1))
-		{
-			gps_process(&hgps, &rx, 1); // Process byte-by-byte
-			printf("%c", rx);
-		}
-		// printf("Lat: %f\n", hgps.latitude);
-		// printf("Long: %f\n", hgps.longitude);
-	}
-	else
-	{
-		printf("Lat: %f\n", hgps.latitude);
-	}
-}
-
-static void MX_UART4_Init(void)
-{
-  // USER CODE END UART4_Init 1
-  huart4.Instance = UART4;
-  huart4.Init.BaudRate = 9600;
-  huart4.Init.WordLength = UART_WORDLENGTH_8B;
-  huart4.Init.StopBits = UART_STOPBITS_1;
-  huart4.Init.Parity = UART_PARITY_NONE;
-  huart4.Init.Mode = UART_MODE_TX_RX;
-  huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart4.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart4) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-void Uart4_RX_GPS_Int_Handler(void)
-{
-	// Un-comment for debugging
-	// __NOP();
-
-	// Write to buffer only
-	// gps_buff_write(&hgps_buff, &gps_rx, 1);
-	// parse_GPS();
-	printf("%c", gps_rx);
-	// HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-	// HAL_Delay(10);
-	// printf("Interrupt\n");
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	// Uart4_RX_Int_Handler();
-	Uart4_RX_GPS_Int_Handler();
-	HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-}
-
-void uartAndGpsInit()
-{
-	MX_UART4_Init();
-	HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-	printf("UART4 Ready\n");
-	gps_init(&hgps);
-	gps_buff_init(&hgps_buff, hgps_buff_data, sizeof(hgps_buff_data));
-	printf("GPS and buffers initialized\n");
-}
-*/
-
-// UART_HandleTypeDef huart4;
 uint8_t buffer_rx[4];
-
 uint8_t gps_tx_data2[] = ""
 "$GPRMC,183729,A,3907.356,N,12102.482,W,000.0,360.0,080301,015.5,E*6F\r\n"
 "$GPRMB,A,,,,,,,,,,,,V*71\r\n"
@@ -217,48 +95,14 @@ uint8_t gps_tx_data[] = ""
 uint8_t luke_gps[] = ""
 "$NGGA,014626.00,3720.19969,N,12152.86258,W,2,12,0.67,36.3,M,-29.9,M,,0000*43";
 
-//uint8_t gps_rx;
-//
-///* GPS handle  */
-//gps_t hgps;
-//
-///* GPS buffer */
-//gps_buff_t hgps_buff;
-//uint8_t hgps_buff_data[12];
+// uint8_t gps_rx;
 
-// void parse_GPS(gps_buff_t buf);
+// GPS handle
+// gps_t hgps;
 
-
-
-
-
-// static void MX_UART4_Init(void);
-
-//UART4 in interrupt mode
-//When data is received by UART4 it is sent in Uart1
-/*void Uart4_RX_Int_Handler(void)
-{
-	//Un-comment for debugging
-	//__NOP();
-	HAL_UART_Transmit(&huart4, &gps_rx, 1, 10);
-	HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-}*/
-
-// Interrupt handler when GPS string is received on UART 4
-
-//Send data on UARt4 for loopback testing
-/*void send_data_Uart4(void)
-{
-	//Enable RX interrupt for Uart4
-	HAL_UART_Receive_IT(&huart4, buffer_rx, 4);
-	//Reset elements of RX
-	memset(buffer_rx, 0, sizeof(buffer_rx));
-
-	//Send data on UART4 to test loopback mode
-	uint8_t Send[] = "Hi\n";
-	HAL_UART_Transmit(&huart4, Send, sizeof(Send), 10);
-	HAL_Delay(1000);
-}*/
+// GPS buffer
+// gps_buff_t hgps_buff;
+// uint8_t hgps_buff_data[12];
 
 void print_GPS_values(void)
 {
@@ -301,26 +145,53 @@ int main(void)
   Console_UART_Init();
   printf("Console Initialized...\n");
 
-  // MX_UART4_Init();
-  // HAL_UART_Receive_IT(&huart4, &gps_rx, 1);
-  // printf("UART4 ready for interrupts...\n");
+  // Configure Buttons Luke
+
+     __GPIOC_CLK_ENABLE();
+  	// __GPIOA_CLK_ENABLE();
+  	GPIO_InitTypeDef myPin;
+  	myPin.Pin = GPIO_PIN_2;
+  	// myPin.Mode = GPIO_MODE_INPUT;	// not interrupt
+  	myPin.Pull = GPIO_NOPULL;
+  	myPin.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  	myPin.Mode = GPIO_MODE_IT_RISING;
+  	HAL_GPIO_Init(GPIOC, &myPin);
+
+  	GPIO_InitTypeDef myPin3;
+  	myPin3.Pin = GPIO_PIN_3;
+	// myPin.Mode = GPIO_MODE_INPUT;	// not interrupt
+	myPin3.Pull = GPIO_NOPULL;
+	myPin3.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	myPin3.Mode = GPIO_MODE_IT_RISING;
+	HAL_GPIO_Init(GPIOC, &myPin3);
+
+
+  	HAL_NVIC_SetPriority(EXTI2_IRQn, 0x0F, 0x00);
+	HAL_NVIC_EnableIRQ(EXTI2_IRQn);
+	HAL_NVIC_SetPriority(EXTI3_IRQn, 0x0F, 0x00);
+	HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+	HAL_NVIC_SetPriority(EXTI4_IRQn, 0x0F, 0x00);
+	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+  	printf("Pin initialized\n");
+
+
+  	// This code works
+
+
+  	// while(1)
+  	// {
+  		/*
+  		if (GPIOC->IDR & GPIO_PIN_14)
+  		{
+  		  printf("Button Pressed\n");
+  		}
+  		HAL_Delay(1000);
+  		*/
+  	// }
+
+
 
   uartAndGpsInit();
-
-  // gps_init(&hgps); /* Init GPS */
-
-  // Create buffer for received data
-  // gps_buff_init(&hgps_buff, hgps_buff_data, sizeof(hgps_buff_data));
-
-
-       // Loopback test
-  	   // printf("Entering Loop...\n");
-	   // send_GPS_Uart4();
-	   // print_GPS_values();
-	   // HAL_Delay(100);
-
-
-
 
 // #ifdef FIREWALL_MBEDLIB
 // firewall_init();
@@ -328,6 +199,7 @@ int main(void)
 
   printf("Starting Cloud Test...\n");
   cloud_test(0);
+  printf("End main\n");
 }
 
 
@@ -444,6 +316,8 @@ static void Button_ISR(void)
 {
   button_flags++;
 }
+
+
 
 
 /**
@@ -612,6 +486,24 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		SPI_WIFI_ISR();
 		break;
+	}
+
+	case (GPIO_PIN_2):
+	{
+	  floorButtonISR();
+	  break;
+	}
+
+	case (GPIO_PIN_3):
+	{
+	  dangerButtonISR();
+	  break;
+	}
+
+	case (GPIO_PIN_4):
+	{
+	  Button_ISR();
+	  break;
 	}
 
     default:
