@@ -1,3 +1,7 @@
+## What is this?
+This is the senior project done by Luke Dillon, Troy Kurniawan, William Wong, and Zijian Guan. The goal of this project was to create a real time tracker for firefighters.  We utilized Google Cloud's IoT platform to send GPS coordinates from an ST Microcontroller->Google IoT->Firebase->Web App.  Here is a video demonstration: https://www.youtube.com/watch?v=JNLT8FqZ3aM&t=1s
+
+
 ## Cloning and Pushing Protocol
 1. Clone repo
 2. Copy, ctrl+c not drag and drop, Luke430Complete files into Eclipse workspace under Application/User
